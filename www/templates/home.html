@@ -1,0 +1,23 @@
+<ion-view view-title="VeloStan">
+    <ion-content class="padding" scroll="false">
+        <button class="button button-block button-outline button-positive" ng-click="locate()">
+            Parking le plus proche de moi
+        </button>
+
+
+        <div class="card" ng-show="display_closest">
+            <div class="item item-text-wrap">
+                <div class="item item-divider">
+                    {{ closest.name }}
+                </div>
+                <div class="item item-text-wrap" >
+                    <p>Adresse : {{ closest.address }}</p>
+                    <p>Nombre de vélos disponibles : {{ closest.available_bikes }}</p>
+                    <p>Nombre de places disponibles : {{ closest.available_bike_stands }}</p>
+                    <p>Infos mises à jour à : {{ closest.last_update }}</p>
+                    <a href="geo:{{ closest.position.lat }},{{ closest.position.lng }}">Ouvrir dans Maps</a>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
