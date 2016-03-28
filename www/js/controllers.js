@@ -131,14 +131,9 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MapsCtrl', function($scope, $http, Station, currentPosition) {
-    $scope.markersResponse = new Array();
-    $scope.markersResponseTotal = new Array();
+    $scope.markers = new Array();
 
     angular.extend($scope, {
-        globals: {
-            L: true,
-            angular: true
-        },
         Center: {
             lat: 48.6930000581379,
             lng: 6.17843627929688,
@@ -147,6 +142,15 @@ angular.module('starter.controllers', [])
         position: {
             lat: 58.6930000581379,
             lng: 6.17843627929688
+        },
+        layers: {
+            baselayers: {
+                osm: {
+                    name: 'OpenStreetMap',
+                    url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    type: 'xyz'
+                }
+            }
         },
         events: {},
         defaults:{
