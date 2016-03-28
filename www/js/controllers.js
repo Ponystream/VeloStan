@@ -1,7 +1,8 @@
 angular.module('starter.controllers', [])
 
-.controller('HomeCtrl', function($scope, $http, Station, currentPosition, $ionicLoading) {
-    $scope.stations = [];
+.controller('HomeCtrl', function($scope, $http, Station, currentPosition, $ionicLoading, $rootScope) {
+    $rootScope.stations = [];
+    $rootScope.markers = new Array();
     $scope.closest = null;
     $scope.display_closest = false;
     $scope.position = {
@@ -24,12 +25,20 @@ angular.module('starter.controllers', [])
     
     // Get all the stations
     $http.get(url).then(function(response){
+        console
         response.data.forEach(function(single){
             single.last_update = new Date(single.last_update);
-            $scope.stations.push(new Station(single));
-            
+            $rootScope.stations.push(new Station(single));
+            $rootScope.markers.push({
+                lat: single.position.lat,
+                lng: single.position.lng,
+                message: single.name,
+                focus: true,
+                draggable: false
+            });
+
         });
-        console.log($scope.stations);
+        console.log($rootScope.stations);
     });
     
 
@@ -117,7 +126,7 @@ angular.module('starter.controllers', [])
         // var arrets = JSON.parse(request.responseText);
         var dist = 1000;
         var closestStation;
-        $scope.stations.forEach(function (station) {
+        $rootScope.stations.forEach(function (station) {
             var calc = distance($scope.position.lat, $scope.position.lng, station.position.lat, station.position.lng);
             if (calc < dist) {
                 dist = calc;
@@ -130,8 +139,15 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('MapsCtrl', function($scope, $http, Station, currentPosition) {
+.controller('MapsCtrl', function($scope, $http, Station, currentPosition, $rootScope) {
     $scope.markers = new Array();
+    $scope.markers = $rootScope.markers;
+    console.log("##########################");
+    console.log(currentPosition.position);
+    // $scope.Center = {
+    //     lat : currentPosition.position.lat,
+    //     lng : currentPosition.position.lng
+    // };
 
     angular.extend($scope, {
         Center: {
@@ -167,6 +183,8 @@ angular.module('starter.controllers', [])
             //worldCopyJump : false
         }
     });
+    
+    
 })
 
 
